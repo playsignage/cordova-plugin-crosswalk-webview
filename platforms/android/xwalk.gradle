@@ -104,8 +104,11 @@ if (!project.hasProperty('xwalkCommandLine')) {
 // Apply values after project's build-extras.gradle
 cdvPluginPostBuildExtras.add({
     def xwalkMavenRepo = 'https://download.01.org/crosswalk/releases/crosswalk/android/maven2';
+    // It can happen that the maven repo is down, fortunately there is an alternative subdomain:
+    //def xwalkMavenRepo = 'https://origin-download.01.org/crosswalk/releases/crosswalk/android/maven2';
     if (xwalkMode == LITE_MODE) {
         xwalkMavenRepo = 'https://download.01.org/crosswalk/releases/crosswalk-lite/android/maven2';
+        //xwalkMavenRepo = 'https://origin-download.01.org/crosswalk/releases/crosswalk-lite/android/maven2';
     }
     repositories {
       maven {
@@ -169,9 +172,11 @@ cdvPluginPostBuildExtras.add({
         def variantName = variant.name.capitalize()
         def mergeTask = tasks["merge${variantName}Assets"]
         def processTask = tasks["process${variantName}Resources"]
-        def outFile = new File (mergeTask.outputDir, "xwalk-command-line")
-        def newTask = project.task("createXwalkCommandLineFile${variantName}") << {
-            mergeTask.outputDir.mkdirs()
+
+        // Fix inspired by: https://github.com/dev-gml/cordova-plugin-crosswalk-webview-v3/commit/677a709f2f81cf3a31a09a23aca2482627c12306
+        def outFile = new File(file(mergeTask.outputDir), "xwalk-command-line")
+        def newTask = project.task("createXwalkCommandLineFile${variantName}") doLast {
+        mkdir(mergeTask.outputDir)
             outFile.write("xwalk ${xwalkCommandLine}\n")
         }
         newTask.dependsOn(mergeTask)
