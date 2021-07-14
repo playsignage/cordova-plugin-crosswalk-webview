@@ -105,12 +105,12 @@ if (!project.hasProperty('xwalkCommandLine')) {
 cdvPluginPostBuildExtras.add({
     // in case both repos are down, downloaded org.zip to root of this plugin repo and follow instructions from:
     // https://github.com/crosswalk-project/cordova-plugin-crosswalk-webview/issues/158#issuecomment-469709996
-    def xwalkMavenRepo = 'https://download.01.org/crosswalk/releases/crosswalk/android/maven2';
+    //def xwalkMavenRepo = 'https://download.01.org/crosswalk/releases/crosswalk/android/maven2';
     // It can happen that the maven repo is down, fortunately there is an alternative subdomain:
-    //def xwalkMavenRepo = 'https://origin-download.01.org/crosswalk/releases/crosswalk/android/maven2';
+    def xwalkMavenRepo = 'https://origin-download.01.org/crosswalk/releases/crosswalk/android/maven2';
     if (xwalkMode == LITE_MODE) {
-        xwalkMavenRepo = 'https://download.01.org/crosswalk/releases/crosswalk-lite/android/maven2';
-        //xwalkMavenRepo = 'https://origin-download.01.org/crosswalk/releases/crosswalk-lite/android/maven2';
+        //xwalkMavenRepo = 'https://download.01.org/crosswalk/releases/crosswalk-lite/android/maven2';
+        xwalkMavenRepo = 'https://origin-download.01.org/crosswalk/releases/crosswalk-lite/android/maven2';
     }
     repositories {
       maven {
